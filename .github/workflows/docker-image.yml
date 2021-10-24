@@ -26,18 +26,14 @@ jobs:
               uses: scottbrenner/generate-changelog-action@master
               id: Changelog
               
-            - name: Create Release
-              id: create_release
-              uses: actions/create-release@latest
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+
+            - uses: ncipollo/release-action@v1
               with:
-                tag_name: ${{ github.ref }}
-                release_name: Release ${{ github.ref }}
-                body: |
+                draft: true
+                body: | 
                   ${{ steps.Changelog.outputs.changelog }}
-                draft: false
-                prerelease: false
+                tag: ${{ steps.bump.outputs.new_tag }}
+                token: ${{ secrets.GITHUB_TOKEN }}
         
        
                     
